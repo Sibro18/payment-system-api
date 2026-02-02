@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16
+    container_name: test_task_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    container_name: payment_api
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+asyncpg://compendium_user:1234567890@db:5432/test_task_db
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:
