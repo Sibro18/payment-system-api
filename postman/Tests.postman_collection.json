@@ -1,0 +1,651 @@
+{
+	"info": {
+		"_postman_id": "fe4a3930-efc0-4e86-818b-7400be42cfc4",
+		"name": "Tests",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50751495",
+		"_collection_link": "https://brovtsyns-7521978.postman.co/workspace/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80-%D0%91%D1%80%D0%BE%D0%B2%D1%86%D1%8B%D0%BD's-Workspace~f2342598-439b-4f0c-879d-5bbc5e183fb0/collection/50751495-fe4a3930-efc0-4e86-818b-7400be42cfc4?action=share&source=collection_link&creator=50751495"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/user/list",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"user",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"new_user@mail.ru\",\r\n    \"full_name\": \"Valentin\",\r\n    \"is_admin\": false,\r\n    \"password\": \"1234567890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/user",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"FULGHOR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/user/11111111-1111-1111-1111-111111111111",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"user",
+								"11111111-1111-1111-1111-111111111111"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/user/11111111-1111-1111-1111-111111111111",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"user",
+								"11111111-1111-1111-1111-111111111111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "user_me",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/user/me",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account_me",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/account/me",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"account",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payment_me",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"hostUrl\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            email: pm.environment.get(\"Login\"),\r",
+									"            password: pm.environment.get(\"Password\")\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Login error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    if (res.code === 200) {\r",
+									"        try {\r",
+									"            const response = JSON.parse(res.text());\r",
+									"            \r",
+									"            // Проверяем наличие токена в ожидаемой структуре\r",
+									"            if (response.token && response.token.access_token) {\r",
+									"                const token = response.token.access_token;\r",
+									"                pm.environment.set(\"jwt\", token);\r",
+									"                console.log(\"✓ JWT token saved successfully\");\r",
+									"                console.log(`User: ${response.user.email}, Admin: ${response.user.is_admin}`);\r",
+									"            } else {\r",
+									"                console.warn(\"Token not found in expected format:\", response);\r",
+									"            }\r",
+									"        } catch (parseError) {\r",
+									"            console.error(\"Failed to parse response:\", parseError);\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error(`Login failed with status ${res.code}:`, res.text());\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/payment/me",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"payment",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "common",
+			"item": [
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{Login}}\",\r\n  \"password\": \"{{Password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/auth/",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhook_process",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"transaction_id\": \"f21549cb-8d03-41e5-8c46-fe54f77d3767\",\r\n  \"user_id\": \"11111111-1111-1111-1111-111111111111\",\r\n  \"account_id\": \"33333333-3333-3333-3333-333333333333\",\r\n  \"amount\": 100000,\r\n  \"signature\": \"80a469e92437a005eb5d301276d159df9d24cbbdde6d4d1352969cb3b52f2c16\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/payment/webhook",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"payment",
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

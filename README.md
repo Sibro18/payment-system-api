@@ -47,7 +47,7 @@ Docker автоматически:
 ## 2. Установить зависимости
 
 `pip install -r requirements.txt`
-## 3. Запустить PostgreSQL локально
+## 3. Запустить PostgreSQL локально на порту 5432
 
 ### Любой способ:
 - через pgAdmin  
@@ -65,7 +65,7 @@ Docker автоматически:
 
 ## 6. Запустить приложение
 
-`python src/app.py`
+`python -m src.app`
 API будет доступно на: http://localhost:8000
 
 ---
